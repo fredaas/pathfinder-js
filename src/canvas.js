@@ -45,12 +45,12 @@ export default class Canvas {
                 return;
             }
 
-            switch (e.which) {
+            switch (e.buttons) {
                 case 1:
                     node.w = 1;
                     this.setColor(node.row, node.col, color.block);
                     break;
-                case 3:
+                case 2:
                     node.w = 0;
                     this.setColor(node.row, node.col, color.clear);
             }
@@ -66,12 +66,12 @@ export default class Canvas {
                 return;
             }
 
-            switch (e.which) {
+            switch (e.buttons) {
                 case 1:
                     node.w = 1;
                     this.setColor(node.row, node.col, color.block);
                     break;
-                case 3:
+                case 2:
                     node.w = 0;
                     this.setColor(node.row, node.col, color.clear);
             }
