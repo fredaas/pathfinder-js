@@ -1,24 +1,28 @@
 import Graph from './graph.js'
 import { canvas, c2d, color } from './globals.js'
 
+var _nodeSize;
+var _numCols;
+var _numRows;
+var _offsetCol;
+var _offsetRow;
+
 export default class Canvas {
 
     constructor() {
-        this.size = Math.pow(2, 5);
-        this.cols = Math.floor(canvas.width / this.size);
-        this.rows = Math.floor(canvas.height / this.size);
+        _nodeSize = Math.pow(2, 5);
+        _numRows = Math.floor(canvas.height / _nodeSize);
+        _numCols = Math.floor(canvas.width / _nodeSize);
+        _offsetRow = (canvas.height - _numRows * _nodeSize) / 2;
+        _offsetCol = (canvas.width - _numCols * _nodeSize) / 2;
 
-        // Set x and y offsets to center the tiles as a group on the canvas.
-        this.xOffset = (canvas.width - this.cols * this.size) / 2;
-        this.yOffset = (canvas.height - this.rows * this.size) / 2;
-
-        for (var i = 0; i < this.rows; i++) {
-            for (var j = 0; j < this.cols; j++) {
+        for (var i = 0; i < _numRows; i++) {
+            for (var j = 0; j < _numCols; j++) {
                 this.setColor(i, j, color.clear);
             }
         }
 
-        Graph.init(this.rows, this.cols);
+        Graph.init(_numRows, _numCols);
 
         this.initPair();
 
@@ -31,7 +35,7 @@ export default class Canvas {
                 return;
             }
 
-            if (selected != null && node.w == 1) {
+            if (selected != null && node.w == -1) {
                 return;
             }
 
@@ -47,11 +51,11 @@ export default class Canvas {
 
             switch (e.buttons) {
                 case 1:
-                    node.w = 1;
+                    node.w = -1;
                     this.setColor(node.row, node.col, color.block);
                     break;
                 case 2:
-                    node.w = 0;
+                    node.w = 1;
                     this.setColor(node.row, node.col, color.clear);
             }
         });
@@ -68,11 +72,11 @@ export default class Canvas {
 
             switch (e.buttons) {
                 case 1:
-                    node.w = 1;
+                    node.w = -1;
                     this.setColor(node.row, node.col, color.block);
                     break;
                 case 2:
-                    node.w = 0;
+                    node.w = 1;
                     this.setColor(node.row, node.col, color.clear);
             }
         });
@@ -83,8 +87,8 @@ export default class Canvas {
     }
 
     initPair() {
-        var centerRow = Math.floor(this.rows / 2);
-        var centerCol = Math.floor(this.cols / 2);
+        var centerRow = Math.floor(_numRows / 2);
+        var centerCol = Math.floor(_numCols / 2);
 
         this.setColor(centerRow, centerCol - 1, color.source);
         this.setColor(centerRow, centerCol + 1, color.sink);
@@ -94,8 +98,8 @@ export default class Canvas {
     }
 
     getPos(x, y) {
-        var row = Math.floor((y - this.yOffset) / this.size);
-        var col = Math.floor((x - this.xOffset) / this.size);
+        var row = Math.floor((y - _offsetRow) / _nodeSize);
+        var col = Math.floor((x - _offsetCol) / _nodeSize);
 
         if (row < 0) {
             row = 0;
@@ -105,12 +109,12 @@ export default class Canvas {
             col = 0;
         }
 
-        if (row > this.rows - 1) {
-            row = this.rows - 1;
+        if (row > _numRows - 1) {
+            row = _numRows - 1;
         }
 
-        if (col > this.cols - 1) {
-            col = this.cols - 1;
+        if (col > _numCols - 1) {
+            col = _numCols - 1;
         }
 
         return { row, col };
@@ -118,14 +122,14 @@ export default class Canvas {
 
     setStroke(row, col) {
         c2d.beginPath();
-        c2d.strokeRect(this.xOffset + this.size * col,
-                    this.yOffset + this.size * row, this.size, this.size);
+        c2d.strokeRect(_offsetCol + _nodeSize * col,
+            _offsetRow + _nodeSize * row, _nodeSize, _nodeSize);
     }
 
     setFill(row, col) {
         c2d.beginPath();
-        c2d.fillRect(this.xOffset + this.size * col,
-            this.yOffset + this.size * row, this.size, this.size);
+        c2d.fillRect(_offsetCol + _nodeSize * col, _offsetRow + _nodeSize * row,
+            _nodeSize, _nodeSize);
     }
 
     setColor(row, col, hex) {
