@@ -1,4 +1,5 @@
 import { manhattan } from './heuristics.js';
+import { inf } from './globals.js';
 
 var _graph;
 var _saved;
@@ -12,14 +13,14 @@ export default class Graph {
     static init(numRows, numCols) {
         _numRows = numRows;
         _numCols = numCols;
-        _delta = [ -1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1 ];
+        _delta = [ -1, 0, 0, -1, 0, 1, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1 ];
 
         _graph = new Array(_numRows);
         for (var i = 0; i < _numRows; i++) {
             _graph[i] = new Array(_numCols);
             for (var j = 0; j < _numCols; j++) {
-                _graph[i][j] = { row: i, col: j, w: 1, f: 0, g: 100,
-                    h: 0, parent: null, type: null };
+                _graph[i][j] = { row: i, col: j, w: 1, f: inf, g: inf, h: 0,
+                    parent: null, type: null };
             }
         }
     }
@@ -66,11 +67,11 @@ export default class Graph {
         _saved = node;
     }
 
-    static setHeuristic(sink) {
+    static setHeuristic(sink, heuristic) {
         for (var i = 0; i < _numRows; i++) {
             for (var j = 0; j < _numCols; j++) {
                 var node = _graph[i][j];
-                node.h = manhattan(sink.row - node.row, sink.col - node.col);
+                node.h = heuristic(sink.row - node.row, sink.col - node.col);
             }
         }
     }

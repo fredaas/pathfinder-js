@@ -14,8 +14,10 @@ var color = {
     stroke: '#bcbcbc'
 };
 
+var inf = 1000000;
+
 document.addEventListener('contextmenu', (e) => {
     e.preventDefault()
 });
 
-export { canvas, c2d, color }
+export { canvas, c2d, color, inf }
