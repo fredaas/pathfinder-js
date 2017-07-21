@@ -76,7 +76,7 @@ export default class Pathfinder {
                 _canvas.setColor(u.row, u.col, '#a7ceff');
                 this.expand(u);
             }
-        });
+        }, 0);
     }
 
 }
