@@ -4,7 +4,6 @@ import { inf } from './globals.js';
 var _graph;
 var _saved;
 var _length;
-var _delta;
 var _numRows;
 var _numCols;
 
@@ -13,20 +12,20 @@ export default class Graph {
     static init(numRows, numCols) {
         _numRows = numRows;
         _numCols = numCols;
-        _delta = [ -1, 0, 0, -1, 0, 1, 1, 0, -1, -1, -1, 1, 1, -1, 1, 1 ];
 
         _graph = new Array(_numRows);
         for (var i = 0; i < _numRows; i++) {
             _graph[i] = new Array(_numCols);
             for (var j = 0; j < _numCols; j++) {
                 _graph[i][j] = { row: i, col: j, w: 1, f: inf, g: inf, h: 0,
-                    parent: null, type: null };
+                    parent: null
+                };
             }
         }
     }
 
     static getNode(row, col) {
-        if (row < 0 || col < 0 || row > _numRows - 1 || col > _numCols - 1) {
+        if (row < 0 || col < 0 || row >= _numRows || col >= _numCols) {
             return null;
         }
 
@@ -48,9 +47,13 @@ export default class Graph {
     static getNeighbors(node) {
         var neighbors = [];
 
-        for (var i = 0, j = 1; j < _delta.length; i += 2, j += 2) {
-            var neighbor = this.getNode(node.row + _delta[i],
-                node.col + _delta[j]);
+        for (var i = 0; i < 9; i++) {
+            if (i == 4) {
+                continue;
+            }
+            var dr = Math.floor(i / 3) - 1;
+            var dc = (i % 3) - 1;
+            var neighbor = this.getNode(node.row + dr, node.col + dc);
             if (neighbor != null) {
                 neighbors.push(neighbor);
             }

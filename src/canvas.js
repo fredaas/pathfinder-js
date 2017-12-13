@@ -31,6 +31,10 @@ export default class Canvas {
             var node = Graph.getNode(pos.row, pos.col);
             var selected = Graph.getSavedNode();
 
+            if (node == null) {
+                return;
+            }
+
             if (node.type == 'source' || node.type == 'sink') {
                 return;
             }
@@ -63,6 +67,10 @@ export default class Canvas {
         document.addEventListener('mousedown', (e) => {
             var pos = this.getPos(e.x, e.y);
             var node = Graph.getNode(pos.row, pos.col);
+
+            if (node == null) {
+                return;
+            }
 
             if (node.type == 'source' || node.type == 'sink') {
                 Graph.setSavedNode(node);
@@ -104,17 +112,14 @@ export default class Canvas {
         if (row < 0) {
             row = 0;
         }
-
         if (col < 0) {
             col = 0;
         }
-
-        if (row > _numRows - 1) {
-            row = _numRows - 1;
+        if (row >= _numRows) {
+            row = _numRows;
         }
-
-        if (col > _numCols - 1) {
-            col = _numCols - 1;
+        if (col >= _numCols) {
+            col = _numCols;
         }
 
         return { row, col };

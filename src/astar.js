@@ -19,7 +19,7 @@ export default class AStar extends Pathfinder {
 
         var index = this.open.indexOf(u);
 
-        return this.open.splice(index, index + 1)[0];
+        return this.open.splice(index, 1)[0];
     }
 
     relax(u, v) {
@@ -27,7 +27,11 @@ export default class AStar extends Pathfinder {
             v.g = u.g + v.w;
             v.f = v.g + v.h;
             v.parent = u;
+
+            return true;
         }
+
+        return false;
     }
 
     expand(u) {
@@ -40,12 +44,22 @@ export default class AStar extends Pathfinder {
                 continue;
             }
 
-            if (!this.contains(this.open, v)) {
-                this.open.push(v);
-                this.canvas.setColor(v.row, v.col, '#ffb75f');
+            if (v.type == 'source' || v.type == 'sink') {
+                continue;
             }
 
-            this.relax(u, v);
+            var relaxed = this.relax(u, v);
+
+            if (!relaxed) {
+                continue;
+            }
+
+            if (this.contains(this.open, v)) {
+                continue;
+            }
+
+            this.canvas.setColor(v.row, v.col, '#ffb75f');
+            this.open.push(v);
         }
     }
 
@@ -54,12 +68,18 @@ export default class AStar extends Pathfinder {
 
         Graph.setHeuristic(this.sink, euclidean);
 
-        setInterval(() => {
+        var source = this.extract();
+        this.expand(source);
+        this.closed.push(source)
+
+        var id = setInterval(() => {
             if (this.open.length != 0) {
                 var u = this.extract();
                 this.closed.push(u)
                 this.canvas.setColor(u.row, u.col, '#a7ceff');
                 this.expand(u);
+            } else {
+                clearInterval(id);
             }
         }, 0);
     }

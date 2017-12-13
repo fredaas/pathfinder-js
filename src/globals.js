@@ -8,9 +8,9 @@ canvas.height = window.innerHeight;
 
 var color = {
     source: '#ff644a',
-    sink: '#65e363',
-    block: '#676767',
-    clear: '#ffffff',
+    sink:   '#65e363',
+    block:  '#676767',
+    clear:  '#ffffff',
     stroke: '#bcbcbc'
 };
 
