@@ -1,12 +1,9 @@
-# Pathfinder Algorithms
+# Pathfinder
 
-Current implementation list in a semi-prioritized order:
+The Pathfinder framework consists of two parts: 1) the visualization layer for
+empirical evaluation of the underlying graph-traversal implementation; 2) the
+graph-traversal algorithm responsible for maintaining the node grid.
 
-- [x] A*
-- [ ] IDA*
-- [ ] Dijkstra
-- [ ] BFS
-- [ ] DFS
-- [ ] Prim
-- [ ] Kruskal
-- [ ] Floyd-Warshall
+Currently there is only one back end implementing the A\* algorithm.
+
+**N.B.: THIS PROJECT IS DISCONTINUED INDEFINITELY.**
