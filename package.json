@@ -3,8 +3,7 @@
     "version": "0.1.0",
     "main": "webpack.config.js",
     "scripts": {
-        "watch": "webpack --progress --colors --watch",
-        "server": "webpack-dev-server --progress --colors"
+        "watch": "webpack --progress --colors --watch"
     },
     "author": "Fredrik Ås",
     "license": "ISC",
